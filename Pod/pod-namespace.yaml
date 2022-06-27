@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-testing
+  namespace: testing # name of namespace
+spec:
+  containers:
+  - name: myapp-testing
+    image: hoangduc02011998/go-pod:latest
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 8081
+        protocol: TCP

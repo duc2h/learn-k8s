@@ -4,7 +4,7 @@ FROM golang:1.18.1 as builder
 WORKDIR /backend
 
 # pre-copy/cache go.mod for pre-downloading dependencies and only redownloading them in subsequent builds if they change
-COPY go.mod ./
+COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
 COPY . .

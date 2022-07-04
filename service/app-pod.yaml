@@ -1,16 +1,20 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: ReplicaSet
 metadata:
   name: myapp-redis
-  labels:
-    name: myapp
 spec:
-  containers:
-  - name: myapp
-    image: hoangduc02011998/go-pod:test-redis
-    resources:
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
-    ports:
-      - containerPort: 8081
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp-redis
+  template:
+    metadata:
+      labels:
+        app: myapp-redis
+    spec:
+      containers:
+      - name: myapp-redis
+        image: hoangduc02011998/go-pod:run-redis
+        ports:
+          - containerPort: 8081
+            protocol: TCP

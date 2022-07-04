@@ -27,6 +27,8 @@ metadata:
 spec:
   selector:
     app: redis # label selectors pod redis
+  type: NodePort
   ports:
   - port: 6379 # port of the service
     targetPort: 6379 # port of the container that service will forward to 
+    nodePort: 30112

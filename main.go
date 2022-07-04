@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net"
@@ -10,7 +11,7 @@ import (
 )
 
 func main() {
-	lis, err := net.Listen("tcp", "localhost:8081")
+	lis, err := net.Listen("tcp", ":8081")
 	if err != nil {
 		panic(err)
 	}
@@ -31,21 +32,21 @@ func main() {
 }
 
 func connectRedis() {
-	redis.NewClient(&redis.Options{
-		Addr:     "redis://redis-svc:6379",
+	client := redis.NewClient(&redis.Options{
+		Addr:     "redis-svc:6379",
 		Password: "",
 		DB:       0,
 	})
 
-	// fmt.Println(client)
-	// if client == nil {
-	// 	log.Fatal("cannot connect to Redis")
-	// }
+	fmt.Println(client)
+	if client == nil {
+		log.Fatal("cannot connect to Redis")
+	}
 
-	// err := client.Set(context.Background(), "key", "value", 0).Err()
-	// if err != nil {
-	// 	panic(err)
-	// }
+	err := client.Set(context.Background(), "key", "value", 0).Err()
+	if err != nil {
+		panic(err)
+	}
 
-	// fmt.Println("Connect to Redis successfully")
+	fmt.Println("Connect to Redis successfully")
 }

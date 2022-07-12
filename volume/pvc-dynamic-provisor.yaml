@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mongodb-pvc
+spec:
+  resources:
+    requests:
+      storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  # storageClassName: "" # regarding dynamic provisioning, we don't assign value for this field, 
+                         # so cluster will find storage default and create a new persistentVolume

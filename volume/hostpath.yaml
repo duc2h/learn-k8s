@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fortune
+  labels:
+    name: fortune
+spec:
+  containers:
+  - name: html-generator
+    image: luksa/fortune
+    volumeMounts: # mount volume into pod
+      - mountPath: /var/htdocs 
+        name: html # The volume called html is mounted at /var/htdocs in the container
+    resources: 
+      limits: 
+        memory: "128Mi"
+        cpu: "500m"
+  - name: web-server
+    image: nginx:alpine
+    ports:
+      - containerPort: 80
+        protocol: TCP
+    volumeMounts:
+      - mountPath: /usr/share/nginx/html
+        name: html # the volume called html is mounted at /usr/share/nginx/html in the container
+        readOnly: true
+      - mountPath: /var/log/nginx
+        name: log
+    resources: 
+      limits: 
+        memory: "128Mi"
+        cpu: "500m"
+  volumes: # define volumes
+    - name: html # name of the volume
+      emptyDir: {} # define type is emptyDir
+    - name: log
+      hostPath:
+        path: /var/log

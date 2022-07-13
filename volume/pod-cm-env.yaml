@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-cm-env
+  labels:
+    name: myapp
+spec:
+  containers:
+  - name: pod-cm-env
+    image: hoangduc02011998/go-pod:cm-env
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    envFrom: # use envFrom instead of env
+      - configMapRef: # referencing the configMap
+          name: myapp-cm # name of config-map
+    ports:
+      - containerPort: 8081
+        protocol: TCP

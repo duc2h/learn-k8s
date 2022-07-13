@@ -20,6 +20,9 @@ func main() {
 
 	connectRedis()
 
+	fmt.Println("value of FOO: ", os.Getenv("FOO"))
+	fmt.Println("value of BAR: ", os.Getenv("BAR"))
+
 	for {
 		_, err := lis.Accept()
 		if err != nil {

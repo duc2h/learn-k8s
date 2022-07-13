@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-cm
+data:
+  FOO: name_foo
+  BAR: name_bar

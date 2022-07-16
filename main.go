@@ -3,12 +3,23 @@ package main
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net"
 	"os"
 
 	"github.com/go-redis/redis/v9"
+	"gopkg.in/yaml.v3"
 )
+
+type config struct {
+	RedisCfg redisConfig `yaml:"redis"`
+}
+
+type redisConfig struct {
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
+}
 
 func main() {
 	lis, err := net.Listen("tcp", ":8081")
@@ -18,10 +29,14 @@ func main() {
 
 	defer lis.Close()
 
-	connectRedis()
+	// connectRedis()
 
-	fmt.Println("value of FOO: ", os.Getenv("FOO"))
-	fmt.Println("value of BAR: ", os.Getenv("BAR"))
+	// fmt.Println("value of FOO: ", os.Getenv("FOO"))
+	// fmt.Println("value of BAR: ", os.Getenv("BAR"))
+	cfg := getConfig()
+
+	fmt.Println("value user redis user: ", cfg.RedisCfg.User)
+	fmt.Println("value user redis password: ", cfg.RedisCfg.Password)
 
 	for {
 		_, err := lis.Accept()
@@ -52,4 +67,23 @@ func connectRedis() {
 	}
 
 	fmt.Println("Connect to Redis successfully")
+}
+
+func getConfig() *config {
+	bytes, err := ioutil.ReadFile("configs/env.yaml")
+	if err != nil {
+		panic(err)
+	}
+
+	cfg := &config{}
+
+	err = yaml.Unmarshal(bytes, cfg)
+
+	fmt.Println(cfg)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return cfg
 }

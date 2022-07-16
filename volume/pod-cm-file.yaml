@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-cm-file
+spec:
+  containers:
+  - name: pod-cm-file
+    image: hoangduc02011998/go-pod:cm-file
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 8081
+        protocol: TCP
+    volumeMounts:
+      - name: config-volume
+        mountPath: configs/env.yaml
+        subPath: env.yaml
+  volumes:
+    - name: config-volume
+      configMap:
+        name: cm-file
+        items:
+        - key: env.yaml
+          path: env.yaml

@@ -21,6 +21,15 @@ type redisConfig struct {
 	Password string `yaml:"password"`
 }
 
+type secret struct {
+	RedisSecret redisSecret `yaml:"redis-secret"`
+}
+
+type redisSecret struct {
+	User     string `yaml:"user-secret"`
+	Password string `yaml:"password-secret"`
+}
+
 func main() {
 	lis, err := net.Listen("tcp", ":8081")
 	if err != nil {
@@ -37,6 +46,11 @@ func main() {
 
 	fmt.Println("value user redis user: ", cfg.RedisCfg.User)
 	fmt.Println("value user redis password: ", cfg.RedisCfg.Password)
+
+	secret := getSecret()
+
+	fmt.Println("value user redis user-secret: ", secret.RedisSecret.User)
+	fmt.Println("value user redis password-secret: ", secret.RedisSecret.Password)
 
 	for {
 		_, err := lis.Accept()
@@ -86,4 +100,23 @@ func getConfig() *config {
 	}
 
 	return cfg
+}
+
+func getSecret() *secret {
+	bytes, err := ioutil.ReadFile("secrets/env-secret.yaml")
+	if err != nil {
+		panic(err)
+	}
+
+	secret := &secret{}
+
+	err = yaml.Unmarshal(bytes, secret)
+
+	fmt.Println(secret)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return secret
 }

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-readiness-probe
+spec:
+  containers:
+  - name: myapp-readiness-probe
+    image: k8spatterns/random-generator:1.0
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 8080
+    readinessProbe:
+      exec:
+        command: 
+          - "stat"
+          - "/var/run/random-generator-ready"

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-liveness-probe
+spec:
+  containers:
+  - name: myapp-liveness-probe
+    image: k8spatterns/random-generator:1.0
+    env:
+      - name: DELAY_STARTUP
+        value: "20"
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 8080
+    livenessProbe:
+      httpGet: # using http method
+        path: / # path to exec http check
+        port: 8080 
+      initialDelaySeconds: 30 # delay 30 second before check

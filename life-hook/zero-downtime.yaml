@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-zero-downtime
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp-zero-downtime
+  template:
+    metadata:
+      labels:
+        app: myapp-zero-downtime
+    spec:
+      containers:
+      - name: myapp-zero-downtime
+        image: registry.kala.ai/web-crm/socket-server
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3001
+        envFrom:
+          - configMapRef:
+              name: backend
+        readinessProbe:
+          initialDelaySeconds: 2
+          periodSeconds: 5
+          tcpSocket:
+            port: 3001

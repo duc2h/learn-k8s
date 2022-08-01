@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: bind-role-read-service
+  namespace: foo
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role # must be Role or ClusterRole
+  name: read-service # this must match the name of the Role or ClusterRole you wish to bind to
+subjects:
+  - kind: ServiceAccount # kind is user or ServiceAccount
+    name: default # name of user or ServiceAccount
+    namespace: foo

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-rq1
+  labels:
+    name: myapp-rq1
+spec:
+  containers:
+  - name: myapp-rq1
+    image: busybox
+    command: ["dd", "if=/dev/zero", "of=/dev/null"]
+    resources:
+      requests:
+        memory: "10Mi"
+        cpu: "110m"

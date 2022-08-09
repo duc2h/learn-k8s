@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-rq
+  labels:
+    name: myapp-rq
+spec:
+  containers:
+  - name: myapp-rq 
+    image: busybox
+    command: ["dd", "if=/dev/zero", "of=/dev/null"]
+    resources:
+      requests:
+        memory: 10Mi # The container requests 10 mibibytes of memory
+        cpu: 200m # the container requests 200 millicores (that is 1/5 of a single CPU core's time)

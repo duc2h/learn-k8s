@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-lm
+  labels:
+    name: myapp-lm
+spec:
+  containers:
+  - name: myapp-lm 
+    image: busybox
+    command: ["dd", "if=/dev/zero", "of=/dev/null"]
+    resources:
+      limits:
+        memory: 10Mi # The container requests 10 mibibytes of memory
+        cpu: 200m # the container requests 200 millicores (that is 1/5 of a single CPU core's time)

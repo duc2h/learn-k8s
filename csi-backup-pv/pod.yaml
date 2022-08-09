@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-app
+spec:
+  selector:
+    matchLabels:
+      app: hello-app
+  template:
+    metadata:
+      labels:
+        app: hello-app
+    spec:
+      containers:
+      - name: hello-app
+        image: google/cloud-sdk:slim
+        args: [ "sleep", "3600" ]
+        volumeMounts:
+        - name: sdk-volume
+          mountPath: /usr/share/hello/
+      volumes:
+      - name: sdk-volume
+        persistentVolumeClaim:
+          claimName: my-pvc

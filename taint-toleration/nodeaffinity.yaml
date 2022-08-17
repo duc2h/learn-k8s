@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-node
+spec:
+  selector:
+    matchLabels:
+      app: myapp-node
+  template:
+    metadata:
+      labels:
+        app: myapp-node
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - preference:
+                matchExpressions:
+                  - key: cpu # the key of label
+                    operator: In
+                    values:
+                      - "high"
+              weight: 50
+            - preference:
+                matchExpressions:
+                  - key: cpu # the key of label
+                    operator: In
+                    values:
+                      - "medium"
+              weight: 30
+          # requiredDuringSchedulingIgnoredDuringExecution:
+          #   nodeSelectorTerms:
+          #     - matchExpressions:
+          #         - key: disktype
+          #           operator: In
+          #           values:
+          #             - "ssd"
+      containers:
+      - name: myapp-node
+        image: alpine
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+    
+

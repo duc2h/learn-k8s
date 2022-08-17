@@ -1,0 +1,10 @@
+tolerations:
+- key: "key1" # assign the pod if it is match with node's taint
+  operator: "Equal"
+  value: "value1"
+  effect: "NoSchedule"
+- key: "key1" # if it match with node's taint, the pod will stay bound to the node for 3600 seconds, and then be evicted. If the taint is removed before that time, the pod will not be evicted.
+  operator: "Equal"
+  value: "value1"
+  effect: "NoExecute"
+  tolerationSeconds: 3600

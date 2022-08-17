@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-pod
+spec:
+  selector:
+    matchLabels:
+      app: myapp-pod
+  template:
+    metadata:
+      labels:
+        app: myapp-pod
+    spec:
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: kubernetes.io/hostname # this is a scope of pod in the node
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/name # the selectorLabels of other pods
+                      operator: In
+                      values:
+                        - "nats-jetstream"
+              weight: 1
+        # podAntiAffinity:
+        #   preferredDuringSchedulingIgnoredDuringExecution:
+        #     - podAffinityTerm:
+        #         topologyKey: kubernetes.io/hostname # this is a scope of pod in the node
+        #         labelSelector:
+        #           matchExpressions:
+        #             - key: app.kubernetes.io/name # the selectorLabels of other pods
+        #               operator: In
+        #               values:
+        #                 - "nats-jetstream"
+        #       weight: 1
+      containers:
+      - name: myapp-pod
+        image: alpine
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
